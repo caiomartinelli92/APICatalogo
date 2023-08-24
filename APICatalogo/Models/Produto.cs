@@ -9,4 +9,7 @@ public class Produto
     public string? ImagemUrl { get; set; }
     public float Estoque { get; set; }
     public DateTime DataCadastro { get; set; }
+    //com a propriedade categoriaid o migrations irá criar essa coluna no banco de dados
+    public int CategoriaId { get; set; }
+    public Categoria? Categoria { get; set; }
 }

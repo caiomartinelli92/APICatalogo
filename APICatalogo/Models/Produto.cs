@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace APICatalogo.Models;
 
@@ -28,5 +29,7 @@ public class Produto
     public DateTime DataCadastro { get; set; }
     //com a propriedade categoriaid o migrations irá criar essa coluna no banco de dados
     public int CategoriaId { get; set; }
+
+    [JsonIgnore]
     public Categoria? Categoria { get; set; }
 }

@@ -20,24 +20,41 @@ namespace APICatalogo.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Produto>> Get()
         {
-            //Utilizando o take para limitar o resultado da busca
-            var produtos = _context.Produtos.Take(10).AsNoTracking().ToList();
-            if (produtos is null)
+            try
             {
-                return NotFound("Produtos não encontrados");
+                //Utilizando o take para limitar o resultado da busca
+                var produtos = _context.Produtos.Take(10).AsNoTracking().ToList();
+                if (produtos is null)
+                {
+                    return NotFound("Produtos não encontrados");
+                }
+                return produtos;
             }
-            return produtos;
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Ocorreu um problema ao tratar a sua solicitação");
+            }
         }
 
         [HttpGet("{id:int}", Name = "ObterProduto")]
         public ActionResult<Produto> Get(int id)
         {
-            var produto = _context.Produtos.FirstOrDefault(p => p.ProdutoId == id);
-            if (produto is null)
+            try
             {
-                return NotFound("Produto não encontrado");
+                var produto = _context.Produtos.FirstOrDefault(p => p.ProdutoId == id);
+                if (produto is null)
+                {
+                    return NotFound("Produto não encontrado");
+                }
+                return produto;
+
             }
-            return produto;
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+    "Ocorreu um problema ao tratar a sua solicitação");
+            }
         }
 
         [HttpPost]
@@ -57,9 +74,9 @@ namespace APICatalogo.Controllers
         /*Este método faz a atualização de todos os campos.
          *Para atualização parcial é necessário criar um método Patch*/
         [HttpPut("{id:int}")]
-        public ActionResult Put (int id, Produto produto)
+        public ActionResult Put(int id, Produto produto)
         {
-            if(id != produto.ProdutoId)
+            if (id != produto.ProdutoId)
             {
                 return BadRequest();
             }
@@ -75,7 +92,7 @@ namespace APICatalogo.Controllers
         {
             var produto = _context.Produtos.FirstOrDefault(p => p.ProdutoId == id);
 
-            if(produto is null)
+            if (produto is null)
             {
                 return NotFound("Produto não encontrado");
             }
